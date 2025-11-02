@@ -50,11 +50,13 @@
       margin-top: 10px;
       font-size: 16px;
     }
-    .reward, .certificate {
+    .certificate {
       margin-top: 30px;
-      padding: 15px;
-      border: 2px dashed #4CAF50;
-      background-color: #eaffea;
+      padding: 30px;
+      border: 5px double #004080;
+      background-color: #f9fcff;
+      font-size: 18px;
+      color: #003366;
       display: none;
     }
     #startScreen {
@@ -70,13 +72,6 @@
       border-radius: 5px;
       cursor: pointer;
     }
-    .certificate {
-  border: 5px double #004080;
-  padding: 30px;
-  background-color: #f9fcff;
-  font-size: 18px;
-  color: #003366;
-}
   </style>
 </head>
 <body>
@@ -107,96 +102,118 @@
       <p id="certText"></p>
       <button onclick="window.print()">Download Certificate</button>
     </div>
-  </div>
-      let student = "";
-    let currentQuestion = 0;
-    let score = 0;
-    let timeLeft = 400;
-    const timerDisplay = document.getElementById("timer");
-    const scoreDisplay = document.getElementById("score");
-    const totalDisplay = document.getElementById("total");
-    const feedbackBox = document.getElementById("feedback");
-    const rewardBox = document.getElementById("reward");
-    const certBox = document.getElementById("certificate");
-    const certText = document.getElementById("certText");
+    <script>
+  const quizData = [
+    { question: "What does <html> do?", options: ["Adds a heading", "Starts the document", "Makes text bold", "Inserts an image"], answer: 1, explanation: "✅ <html> defines the start and end of an HTML document." },
+    { question: "Which tag makes text bold?", options: ["<i>", "<u>", "<b>", "<p>"], answer: 2, explanation: "✅ <b> makes text bold." },
+    { question: "Which tag is used for the largest heading?", options: ["<h6>", "<h1>", "<head>", "<title>"], answer: 1, explanation: "✅ <h1> is the largest heading tag." },
+    { question: "Which tag displays subscript text?", options: ["<sup>", "<sub>", "<strong>", "<em>"], answer: 1, explanation: "✅ <sub> displays subscript text like H₂O." },
+    { question: "What does <body> contain?", options: ["Metadata", "Visible content", "Title", "Font settings"], answer: 1, explanation: "✅ <body> contains all visible content." },
+    { question: "Which tag adds a horizontal line?", options: ["<hr>", "<br>", "<line>", "<p>"], answer: 0, explanation: "✅ <hr> adds a horizontal line." },
+    { question: "Which tag makes text italic?", options: ["<b>", "<i>", "<u>", "<em>"], answer: 1, explanation: "✅ <i> makes text italic." },
+    { question: "Which tag underlines text?", options: ["<u>", "<i>", "<strong>", "<sub>"], answer: 0, explanation: "✅ <u> underlines text." },
+    { question: "Which tag sets background color?", options: ["<bg>", "<body bgcolor>", "<color>", "<background>"], answer: 1, explanation: "✅ <body bgcolor> sets background color." },
+    { question: "Which tag shows the title in browser tab?", options: ["<head>", "<title>", "<body>", "<h1>"], answer: 1, explanation: "✅ <title> sets the browser tab title." },
+    { question: "Which tag creates a paragraph?", options: ["<para>", "<pg>", "<p>", "<text>"], answer: 2, explanation: "✅ <p> creates a paragraph." },
+    { question: "Which tag inserts a line break?", options: ["<break>", "<lb>", "<br>", "<line>"], answer: 2, explanation: "✅ <br> inserts a line break." },
+    { question: "Which tag emphasizes text (usually bold)?", options: ["<em>", "<strong>", "<b>", "<i>"], answer: 1, explanation: "✅ <strong> emphasizes text." },
+    { question: "Which tag emphasizes text (usually italic)?", options: ["<em>", "<strong>", "<b>", "<i>"], answer: 0, explanation: "✅ <em> emphasizes text." },
+    { question: "Which tag displays superscript text?", options: ["<sup>", "<sub>", "<strong>", "<em>"], answer: 0, explanation: "✅ <sup> displays superscript like x²." },
+    { question: "Which tag sets font color?", options: ["<font>", "<color>", "<style>", "<text>"], answer: 0, explanation: "✅ <font> can set color, size, and style." },
+    { question: "Which tag contains metadata?", options: ["<body>", "<head>", "<footer>", "<main>"], answer: 1, explanation: "✅ <head> contains metadata." },
+    { question: "Which tag is used for headings?", options: ["<heading>", "<h1>", "<head>", "<title>"], answer: 1, explanation: "✅ <h1> to <h6> are heading tags." },
+    { question: "Which tag is used for background image?", options: ["<body background>", "<img>", "<bgimage>", "<background>"], answer: 0, explanation: "✅ <body background> sets a background image." },
+    { question: "Which tag is used to underline text?", options: ["<u>", "<i>", "<b>", "<p>"], answer: 0, explanation: "✅ <u> underlines text." }
+  ];
 
-    function startQuiz() {
-      const nameInput = document.getElementById("studentName").value.trim();
-      if (nameInput === "") {
-        alert("Please enter your name to begin.");
-        return;
-      }
-      student = nameInput;
-      document.getElementById("startScreen").style.display = "none";
-      document.getElementById("quiz").style.display = "block";
-      document.querySelector(".scoreboard").style.display = "block";
-      timerDisplay.style.display = "block";
-      totalDisplay.innerText = quizData.length;
-      loadQuestion();
-      startTimer();
+  let student = "";
+  let currentQuestion = 0;
+  let score = 0;
+  let timeLeft = quizData.length * 20;
+  const timerDisplay = document.getElementById("timer");
+  const scoreDisplay = document.getElementById("score");
+  const totalDisplay = document.getElementById("total");
+  const feedbackBox = document.getElementById("feedback");
+  const certBox = document.getElementById("certificate");
+  const certText = document.getElementById("certText");
+
+  function startQuiz() {
+    const nameInput = document.getElementById("studentName").value.trim();
+    if (nameInput === "") {
+      alert("Please enter your name to begin.");
+      return;
     }
+    student = nameInput;
+    document.getElementById("startScreen").style.display = "none";
+    document.getElementById("quiz").style.display = "block";
+    document.querySelector(".scoreboard").style.display = "block";
+    timerDisplay.style.display = "block";
+    totalDisplay.innerText = quizData.length;
+    loadQuestion();
+    startTimer();
+  }
 
-    function loadQuestion() {
-      const q = quizData[currentQuestion];
-      document.getElementById("question").innerText = `Q${currentQuestion + 1}: ${q.question}`;
-      const optionsDiv = document.getElementById("options");
-      feedbackBox.innerText = "";
-      optionsDiv.innerHTML = "";
-      q.options.forEach((opt, i) => {
-        const btn = document.createElement("button");
-        btn.innerText = opt;
-        btn.onclick = () => checkAnswer(i);
-        optionsDiv.appendChild(btn);
-      });
+  function loadQuestion() {
+    const q = quizData[currentQuestion];
+    document.getElementById("question").innerText = `Q${currentQuestion + 1}: ${q.question}`;
+    const optionsDiv = document.getElementById("options");
+    feedbackBox.innerText = "";
+    optionsDiv.innerHTML = "";
+    q.options.forEach((opt, i) => {
+      const btn = document.createElement("button");
+      btn.innerText = opt;
+      btn.onclick = () => checkAnswer(i);
+      optionsDiv.appendChild(btn);
+    });
+  }
+
+  function checkAnswer(selected) {
+    const q = quizData[currentQuestion];
+    if (selected === q.answer) {
+      score++;
+      feedbackBox.innerHTML = `✅ Correct!<br>${q.explanation}`;
+    } else {
+      feedbackBox.innerHTML = `❌ Incorrect!<br>${q.explanation}`;
     }
-
-    function checkAnswer(selected) {
-      const q = quizData[currentQuestion];
-      if (selected === q.answer) {
-        score++;
-        feedbackBox.innerHTML = `✅ Correct!<br>${q.explanation}`;
+    scoreDisplay.innerText = score;
+    currentQuestion++;
+    setTimeout(() => {
+      if (currentQuestion < quizData.length) {
+        loadQuestion();
       } else {
-        feedbackBox.innerHTML = `❌ Incorrect!<br>${q.explanation}`;
+        endQuiz();
       }
-      scoreDisplay.innerText = score;
-      currentQuestion++;
-      setTimeout(() => {
-        if (currentQuestion < quizData.length) {
-          loadQuestion();
-        } else {
-          endQuiz();
-        }
-      }, 2000);
-    }
+    }, 2000);
+  }
 
-    function endQuiz() {
-      document.getElementById("quiz").style.display = "none";
-      timerDisplay.style.display = "none";
-      document.querySelector(".scoreboard").style.display = "none";
-      let message = "";
-      if (score === quizData.length) {
-        message = "🏆 Excellent! You got a perfect score!";
-      } else if (score >= 15) {
-        message = "🎉 Great job! You scored really well!";
-      } else if (score >= 10) {
-        message = "👍 Good effort! Keep practicing!";
-      } else {
-        message = "📘 Keep learning! Try again soon!";
+  function endQuiz() {
+    document.getElementById("quiz").style.display = "none";
+    timerDisplay.style.display = "none";
+    document.querySelector(".scoreboard").style.display = "none";
+    let message = "";
+    if (score === quizData.length) {
+      message = "🏆 Excellent! You got a perfect score!";
+    } else if (score >= 15) {
+      message = "🎉 Great job! You scored really well!";
+    } else if (score >= 10) {
+      message = "👍 Good effort! Keep practicing!";
+    } else {
+      message = "📘 Keep learning! Try again soon!";
+    }
+    certText.innerHTML = `This certifies that <strong>${student}</strong> has completed the HTML Quiz with a score of <strong>${score}/${quizData.length}</strong>.<br><br>${message}`;
+    certBox.style.display = "block";
+  }
+
+  function startTimer() {
+    const timer = setInterval(() => {
+      timeLeft--;
+      timerDisplay.innerText = `⏱️ Time Left: ${timeLeft}s`;
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        endQuiz();
       }
-      certText.innerHTML = `This certifies that <strong>${student}</strong> has completed the HTML Quiz with a score of <strong>${score}/${quizData.length}</strong>.<br><br>${message}`;
-      certBox.style.display = "block";
-    }
-
-    function startTimer() {
-      const timer = setInterval(() => {
-        timeLeft--;
-        timerDisplay.innerText = `⏱️ Time Left: ${timeLeft}s`;
-        if (timeLeft <= 0) {
-          clearInterval(timer);
-          endQuiz();
-        }
-      }, 1000);
-    }
-  </script>
+    }, 1000);
+  }
+</script>
 </body>
 </html>
