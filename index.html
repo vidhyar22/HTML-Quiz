@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>HTML Quiz App - Class 6</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f8ff;
+      padding: 20px;
+      text-align: center;
+    }
+    .quiz-container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ccc;
+    }
+    .question {
+      font-weight: bold;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    .options button {
+      display: block;
+      margin: 5px auto;
+      padding: 10px;
+      width: 80%;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+      border: 1px solid #aaa;
+    }
+    .score {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+    .certificate {
+      margin-top: 30px;
+      padding: 15px;
+      border: 2px dashed #4CAF50;
+      background-color: #eaffea;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h2>🎓 HTML Quiz – Class 6</h2>
+    <div id="quiz">
+      <div class="question" id="question"></div>
+      <div class="options" id="options"></div>
+      <div class="score" id="score"></div>
+    </div>
+    <div class="certificate" id="certificate">
+      <h3>🏅 Certificate of Completion</h3>
+      <p>Congratulations! You completed the HTML Quiz.</p>
+      <p><strong>Your Score:</strong> <span id="finalScore"></span>/10</p>
+      <p>Keep learning and building awesome web pages!</p>
+    </div>
+  </div>
+
+  <script>
+    const quizData = [
+      { question: "What does <html> do?", options: ["Adds a heading", "Starts the document", "Makes text bold", "Inserts an image"], answer: 1 },
+      { question: "Which tag makes text bold?", options: ["<i>", "<u>", "<b>", "<p>"], answer: 2 },
+      { question: "Which tag is used for the largest heading?", options: ["<h6>", "<h1>", "<head>", "<title>"], answer: 1 },
+      { question: "Which tag displays subscript text?", options: ["<sup>", "<sub>", "<strong>", "<em>"], answer: 1 },
+      { question: "What does <body> contain?", options: ["Metadata", "Visible content", "Title", "Font settings"], answer: 1 },
+      { question: "Which tag adds a horizontal line?", options: ["<hr>", "<br>", "<line>", "<p>"], answer: 0 },
+      { question: "Which tag makes text italic?", options: ["<b>", "<i>", "<u>", "<em>"], answer: 1 },
+      { question: "Which tag underlines text?", options: ["<u>", "<i>", "<strong>", "<sub>"], answer: 0 },
+      { question: "Which tag sets background color?", options: ["<bg>", "<body bgcolor>", "<color>", "<background>"], answer: 1 },
+      { question: "Which tag shows the title in browser tab?", options: ["<head>", "<title>", "<body>", "<h1>"], answer: 1 }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function loadQuestion() {
+      const q = quizData[currentQuestion];
+      document.getElementById("question").innerText = `Q${currentQuestion + 1}: ${q.question}`;
+      const optionsDiv = document.getElementById("options");
+      optionsDiv.innerHTML = "";
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement("button");
+        btn.innerText = opt;
+        btn.onclick = () => checkAnswer(i);
+        optionsDiv.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(selected) {
+      if (selected === quizData[currentQuestion].answer) {
+        score++;
+        alert("✅ Correct!");
+      } else {
+        alert("❌ Incorrect!");
+      }
+      currentQuestion++;
+      if (currentQuestion < quizData.length) {
+        loadQuestion();
+      } else {
+        showResults();
+      }
+    }
+
+    function showResults() {
+      document.getElementById("quiz").style.display = "none";
+      document.getElementById("certificate").style.display = "block";
+      document.getElementById("finalScore").innerText = score;
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>
