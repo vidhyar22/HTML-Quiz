@@ -3,28 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>HTML Quiz - Class 6</title>
+  <title>HTML Quiz – Class 6</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #f0f8ff;
+      background-color: #e6f2ff;
       padding: 20px;
       text-align: center;
     }
     .container {
       max-width: 700px;
       margin: auto;
-      background: #fff;
+      background: #ffffff;
       padding: 20px;
       border-radius: 10px;
-      box-shadow: 0 0 10px #ccc;
+      box-shadow: 0 0 10px #99ccff;
     }
     h2 {
-      margin-bottom: 10px;
+      color: #004080;
     }
     .question {
       font-weight: bold;
       margin: 20px 0 10px;
+      font-size: 18px;
     }
     .options button {
       display: block;
@@ -34,16 +35,20 @@
       font-size: 16px;
       cursor: pointer;
       border-radius: 5px;
-      border: 1px solid #aaa;
+      border: 1px solid #004080;
+      background-color: #cce6ff;
     }
-    .scoreboard {
-      margin-top: 20px;
-      font-size: 18px;
+    .options button:hover {
+      background-color: #b3d9ff;
     }
-    .timer {
+    .scoreboard, .timer {
+      margin-top: 15px;
       font-size: 16px;
-      margin-bottom: 10px;
-      color: #d9534f;
+      color: #004080;
+    }
+    .feedback {
+      margin-top: 10px;
+      font-size: 16px;
     }
     .reward {
       margin-top: 30px;
@@ -57,46 +62,55 @@
 <body>
   <div class="container">
     <h2>🎓 HTML Quiz – Class 6</h2>
-    <div class="timer" id="timer">Time Left: 120s</div>
+    <div class="timer" id="timer">⏱️ Time Left: 400s</div>
     <div id="quiz">
       <div class="question" id="question"></div>
       <div class="options" id="options"></div>
+      <div class="feedback" id="feedback"></div>
     </div>
     <div class="scoreboard">
-      Score: <span id="score">0</span> / <span id="total">10</span>
+      🧮 Score: <span id="score">0</span> / <span id="total">20</span>
     </div>
     <div class="reward" id="reward"></div>
   </div>
 
   <script>
     const quizData = [
-      // Easy
-      { level: "Easy", question: "What does <html> do?", options: ["Adds a heading", "Starts the document", "Makes text bold", "Inserts an image"], answer: 1 },
-      { level: "Easy", question: "Which tag makes text bold?", options: ["<i>", "<u>", "<b>", "<p>"], answer: 2 },
-      { level: "Easy", question: "Which tag is used for the largest heading?", options: ["<h6>", "<h1>", "<head>", "<title>"], answer: 1 },
-      // Medium
-      { level: "Medium", question: "Which tag displays subscript text?", options: ["<sup>", "<sub>", "<strong>", "<em>"], answer: 1 },
-      { level: "Medium", question: "What does <body> contain?", options: ["Metadata", "Visible content", "Title", "Font settings"], answer: 1 },
-      { level: "Medium", question: "Which tag adds a horizontal line?", options: ["<hr>", "<br>", "<line>", "<p>"], answer: 0 },
-      { level: "Medium", question: "Which tag makes text italic?", options: ["<b>", "<i>", "<u>", "<em>"], answer: 1 },
-      // Hard
-      { level: "Hard", question: "Which tag underlines text?", options: ["<u>", "<i>", "<strong>", "<sub>"], answer: 0 },
-      { level: "Hard", question: "Which tag sets background color?", options: ["<bg>", "<body bgcolor>", "<color>", "<background>"], answer: 1 },
-      { level: "Hard", question: "Which tag shows the title in browser tab?", options: ["<head>", "<title>", "<body>", "<h1>"], answer: 1 }
+      { question: "What does <html> do?", options: ["Adds a heading", "Starts the document", "Makes text bold", "Inserts an image"], answer: 1, explanation: "✅ <html> defines the start and end of an HTML document." },
+      { question: "Which tag makes text bold?", options: ["<i>", "<u>", "<b>", "<p>"], answer: 2, explanation: "✅ <b> makes text bold." },
+      { question: "Which tag is used for the largest heading?", options: ["<h6>", "<h1>", "<head>", "<title>"], answer: 1, explanation: "✅ <h1> is the largest heading tag." },
+      { question: "Which tag displays subscript text?", options: ["<sup>", "<sub>", "<strong>", "<em>"], answer: 1, explanation: "✅ <sub> displays subscript text like H₂O." },
+      { question: "What does <body> contain?", options: ["Metadata", "Visible content", "Title", "Font settings"], answer: 1, explanation: "✅ <body> contains all visible content." },
+      { question: "Which tag adds a horizontal line?", options: ["<hr>", "<br>", "<line>", "<p>"], answer: 0, explanation: "✅ <hr> adds a horizontal line." },
+      { question: "Which tag makes text italic?", options: ["<b>", "<i>", "<u>", "<em>"], answer: 1, explanation: "✅ <i> makes text italic." },
+      { question: "Which tag underlines text?", options: ["<u>", "<i>", "<strong>", "<sub>"], answer: 0, explanation: "✅ <u> underlines text." },
+      { question: "Which tag sets background color?", options: ["<bg>", "<body bgcolor>", "<color>", "<background>"], answer: 1, explanation: "✅ <body bgcolor> sets background color." },
+      { question: "Which tag shows the title in browser tab?", options: ["<head>", "<title>", "<body>", "<h1>"], answer: 1, explanation: "✅ <title> sets the browser tab title." },
+      { question: "Which tag creates a paragraph?", options: ["<para>", "<pg>", "<p>", "<text>"], answer: 2, explanation: "✅ <p> creates a paragraph." },
+      { question: "Which tag inserts a line break?", options: ["<break>", "<lb>", "<br>", "<line>"], answer: 2, explanation: "✅ <br> inserts a line break." },
+      { question: "Which tag emphasizes text (usually bold)?", options: ["<em>", "<strong>", "<b>", "<i>"], answer: 1, explanation: "✅ <strong> emphasizes text." },
+      { question: "Which tag emphasizes text (usually italic)?", options: ["<em>", "<strong>", "<b>", "<i>"], answer: 0, explanation: "✅ <em> emphasizes text." },
+      { question: "Which tag displays superscript text?", options: ["<sup>", "<sub>", "<strong>", "<em>"], answer: 0, explanation: "✅ <sup> displays superscript like x²." },
+      { question: "Which tag sets font color?", options: ["<font>", "<color>", "<style>", "<text>"], answer: 0, explanation: "✅ <font> can set color, size, and style." },
+      { question: "Which tag contains metadata?", options: ["<body>", "<head>", "<footer>", "<main>"], answer: 1, explanation: "✅ <head> contains metadata." },
+      { question: "Which tag is used for headings?", options: ["<heading>", "<h1>", "<head>", "<title>"], answer: 1, explanation: "✅ <h1> to <h6> are heading tags." },
+      { question: "Which tag is used for background image?", options: ["<body background>", "<img>", "<bgimage>", "<background>"], answer: 0, explanation: "✅ <body background> sets a background image." },
+      { question: "Which tag is used to underline text?", options: ["<u>", "<i>", "<b>", "<p>"], answer: 0, explanation: "✅ <u> underlines text." }
     ];
-
-    let currentQuestion = 0;
+        let currentQuestion = 0;
     let score = 0;
-    let timeLeft = 120;
+    let timeLeft = quizData.length * 20;
     const timerDisplay = document.getElementById("timer");
     const scoreDisplay = document.getElementById("score");
     const totalDisplay = document.getElementById("total");
+    const feedbackBox = document.getElementById("feedback");
     const rewardBox = document.getElementById("reward");
 
     function loadQuestion() {
       const q = quizData[currentQuestion];
-      document.getElementById("question").innerText = `(${q.level}) Q${currentQuestion + 1}: ${q.question}`;
+      document.getElementById("question").innerText = `Q${currentQuestion + 1}: ${q.question}`;
       const optionsDiv = document.getElementById("options");
+      feedbackBox.innerText = "";
       optionsDiv.innerHTML = "";
       q.options.forEach((opt, i) => {
         const btn = document.createElement("button");
@@ -107,39 +121,45 @@
     }
 
     function checkAnswer(selected) {
-      if (selected === quizData[currentQuestion].answer) {
+      const q = quizData[currentQuestion];
+      if (selected === q.answer) {
         score++;
-      }
-      currentQuestion++;
-      scoreDisplay.innerText = score;
-      if (currentQuestion < quizData.length) {
-        loadQuestion();
+        feedbackBox.innerHTML = `✅ Correct!<br>${q.explanation}`;
       } else {
-        endQuiz();
+        feedbackBox.innerHTML = `❌ Incorrect!<br>${q.explanation}`;
       }
+      scoreDisplay.innerText = score;
+      currentQuestion++;
+      setTimeout(() => {
+        if (currentQuestion < quizData.length) {
+          loadQuestion();
+        } else {
+          endQuiz();
+        }
+      }, 2000);
     }
 
     function endQuiz() {
       document.getElementById("quiz").style.display = "none";
       timerDisplay.style.display = "none";
       let message = "";
-      if (score === 10) {
+      if (score === quizData.length) {
         message = "🏆 Excellent! You got a perfect score!";
-      } else if (score >= 7) {
-        message = "🎉 Great job! You scored well!";
-      } else if (score >= 4) {
+      } else if (score >= 15) {
+        message = "🎉 Great job! You scored really well!";
+      } else if (score >= 10) {
         message = "👍 Good effort! Keep practicing!";
       } else {
         message = "📘 Keep learning! Try again soon!";
       }
-      rewardBox.innerHTML = `<h3>Quiz Completed!</h3><p>${message}</p><p>Your Score: ${score}/10</p>`;
+      rewardBox.innerHTML = `<h3>Quiz Completed!</h3><p>${message}</p><p>Your Score: ${score}/${quizData.length}</p>`;
       rewardBox.style.display = "block";
     }
 
     function startTimer() {
       const timer = setInterval(() => {
         timeLeft--;
-        timerDisplay.innerText = `Time Left: ${timeLeft}s`;
+        timerDisplay.innerText = `⏱️ Time Left: ${timeLeft}s`;
         if (timeLeft <= 0) {
           clearInterval(timer);
           endQuiz();
@@ -147,6 +167,7 @@
       }, 1000);
     }
 
+    totalDisplay.innerText = quizData.length;
     loadQuestion();
     startTimer();
   </script>
