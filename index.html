@@ -50,61 +50,91 @@
       margin-top: 10px;
       font-size: 16px;
     }
-    .reward {
+    .reward, .certificate {
       margin-top: 30px;
       padding: 15px;
       border: 2px dashed #4CAF50;
       background-color: #eaffea;
       display: none;
     }
+    #startScreen {
+      margin-top: 50px;
+    }
+    #certificate button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .certificate {
+  border: 5px double #004080;
+  padding: 30px;
+  background-color: #f9fcff;
+  font-size: 18px;
+  color: #003366;
+}
   </style>
 </head>
 <body>
   <div class="container">
     <h2>🎓 HTML Quiz – Class 6</h2>
-    <div class="timer" id="timer">⏱️ Time Left: 400s</div>
-    <div id="quiz">
+
+    <div id="startScreen">
+      <p>Please enter your name to begin:</p>
+      <input type="text" id="studentName" placeholder="Your name" />
+      <br><br>
+      <button onclick="startQuiz()">Start Quiz</button>
+    </div>
+
+    <div class="timer" id="timer" style="display:none;">⏱️ Time Left: 400s</div>
+
+    <div id="quiz" style="display:none;">
       <div class="question" id="question"></div>
       <div class="options" id="options"></div>
       <div class="feedback" id="feedback"></div>
     </div>
-    <div class="scoreboard">
+
+    <div class="scoreboard" style="display:none;">
       🧮 Score: <span id="score">0</span> / <span id="total">20</span>
     </div>
-    <div class="reward" id="reward"></div>
-  </div>
 
-  <script>
-    const quizData = [
-      { question: "What does <html> do?", options: ["Adds a heading", "Starts the document", "Makes text bold", "Inserts an image"], answer: 1, explanation: "✅ <html> defines the start and end of an HTML document." },
-      { question: "Which tag makes text bold?", options: ["<i>", "<u>", "<b>", "<p>"], answer: 2, explanation: "✅ <b> makes text bold." },
-      { question: "Which tag is used for the largest heading?", options: ["<h6>", "<h1>", "<head>", "<title>"], answer: 1, explanation: "✅ <h1> is the largest heading tag." },
-      { question: "Which tag displays subscript text?", options: ["<sup>", "<sub>", "<strong>", "<em>"], answer: 1, explanation: "✅ <sub> displays subscript text like H₂O." },
-      { question: "What does <body> contain?", options: ["Metadata", "Visible content", "Title", "Font settings"], answer: 1, explanation: "✅ <body> contains all visible content." },
-      { question: "Which tag adds a horizontal line?", options: ["<hr>", "<br>", "<line>", "<p>"], answer: 0, explanation: "✅ <hr> adds a horizontal line." },
-      { question: "Which tag makes text italic?", options: ["<b>", "<i>", "<u>", "<em>"], answer: 1, explanation: "✅ <i> makes text italic." },
-      { question: "Which tag underlines text?", options: ["<u>", "<i>", "<strong>", "<sub>"], answer: 0, explanation: "✅ <u> underlines text." },
-      { question: "Which tag sets background color?", options: ["<bg>", "<body bgcolor>", "<color>", "<background>"], answer: 1, explanation: "✅ <body bgcolor> sets background color." },
-      { question: "Which tag shows the title in browser tab?", options: ["<head>", "<title>", "<body>", "<h1>"], answer: 1, explanation: "✅ <title> sets the browser tab title." },
-      { question: "Which tag creates a paragraph?", options: ["<para>", "<pg>", "<p>", "<text>"], answer: 2, explanation: "✅ <p> creates a paragraph." },
-      { question: "Which tag inserts a line break?", options: ["<break>", "<lb>", "<br>", "<line>"], answer: 2, explanation: "✅ <br> inserts a line break." },
-      { question: "Which tag emphasizes text (usually bold)?", options: ["<em>", "<strong>", "<b>", "<i>"], answer: 1, explanation: "✅ <strong> emphasizes text." },
-      { question: "Which tag emphasizes text (usually italic)?", options: ["<em>", "<strong>", "<b>", "<i>"], answer: 0, explanation: "✅ <em> emphasizes text." },
-      { question: "Which tag displays superscript text?", options: ["<sup>", "<sub>", "<strong>", "<em>"], answer: 0, explanation: "✅ <sup> displays superscript like x²." },
-      { question: "Which tag sets font color?", options: ["<font>", "<color>", "<style>", "<text>"], answer: 0, explanation: "✅ <font> can set color, size, and style." },
-      { question: "Which tag contains metadata?", options: ["<body>", "<head>", "<footer>", "<main>"], answer: 1, explanation: "✅ <head> contains metadata." },
-      { question: "Which tag is used for headings?", options: ["<heading>", "<h1>", "<head>", "<title>"], answer: 1, explanation: "✅ <h1> to <h6> are heading tags." },
-      { question: "Which tag is used for background image?", options: ["<body background>", "<img>", "<bgimage>", "<background>"], answer: 0, explanation: "✅ <body background> sets a background image." },
-      { question: "Which tag is used to underline text?", options: ["<u>", "<i>", "<b>", "<p>"], answer: 0, explanation: "✅ <u> underlines text." }
-    ];
-        let currentQuestion = 0;
+    <div class="certificate" id="certificate">
+      <h3>🏅 Certificate of Completion</h3>
+      <p id="certText"></p>
+      <button onclick="window.print()">Download Certificate</button>
+    </div>
+  </div>
+      let student = "";
+    let currentQuestion = 0;
     let score = 0;
-    let timeLeft = quizData.length * 20;
+    let timeLeft = 400;
     const timerDisplay = document.getElementById("timer");
     const scoreDisplay = document.getElementById("score");
     const totalDisplay = document.getElementById("total");
     const feedbackBox = document.getElementById("feedback");
     const rewardBox = document.getElementById("reward");
+    const certBox = document.getElementById("certificate");
+    const certText = document.getElementById("certText");
+
+    function startQuiz() {
+      const nameInput = document.getElementById("studentName").value.trim();
+      if (nameInput === "") {
+        alert("Please enter your name to begin.");
+        return;
+      }
+      student = nameInput;
+      document.getElementById("startScreen").style.display = "none";
+      document.getElementById("quiz").style.display = "block";
+      document.querySelector(".scoreboard").style.display = "block";
+      timerDisplay.style.display = "block";
+      totalDisplay.innerText = quizData.length;
+      loadQuestion();
+      startTimer();
+    }
 
     function loadQuestion() {
       const q = quizData[currentQuestion];
@@ -142,6 +172,7 @@
     function endQuiz() {
       document.getElementById("quiz").style.display = "none";
       timerDisplay.style.display = "none";
+      document.querySelector(".scoreboard").style.display = "none";
       let message = "";
       if (score === quizData.length) {
         message = "🏆 Excellent! You got a perfect score!";
@@ -152,8 +183,8 @@
       } else {
         message = "📘 Keep learning! Try again soon!";
       }
-      rewardBox.innerHTML = `<h3>Quiz Completed!</h3><p>${message}</p><p>Your Score: ${score}/${quizData.length}</p>`;
-      rewardBox.style.display = "block";
+      certText.innerHTML = `This certifies that <strong>${student}</strong> has completed the HTML Quiz with a score of <strong>${score}/${quizData.length}</strong>.<br><br>${message}`;
+      certBox.style.display = "block";
     }
 
     function startTimer() {
@@ -166,10 +197,6 @@
         }
       }, 1000);
     }
-
-    totalDisplay.innerText = quizData.length;
-    loadQuestion();
-    startTimer();
   </script>
 </body>
 </html>
